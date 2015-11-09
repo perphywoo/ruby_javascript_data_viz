@@ -272,9 +272,9 @@ Hopefully you can start to see how ERB and javascript can interact. Lets add a c
 
 Once the file is done downloading, unzip it and open the folder. THere should be an `index.htm` file. Open this in a web browser such as chrome. This is a static HTML file that contains links to all of the examples that come with the library. If you are having problems implementing a chart it can be very useful to see a simple working example. Take a look at the file and view several examples. When you're done open up the `js` folder where we have access to all of the javascript files.
 
-Here we have access to several folders and files. We will be focusing on `highcharts.src.js`. This contains the same code as `highcharts.js` but `highcharts.js` is minified. Since javascript is run in the browser the entire source code must be sent each time a page is loaded, because of this larger javascript files can slow down page loads. To combat this we can run javascript through a minifier like [YUI compressor](http://developer.yahoo.com/yui/compressor/). A minifier removes all whitespace (spaces and new lines) and will rename internal variables to shorter versions, for example it my rename `mobileShowDidDisplay` to `m`. This might seem pedantic, but there are signifigant size savings while minifying javascript.
+Here we have access to several folders and files. We will be focusing on `highcharts.src.js`. This contains the same code as `highcharts.js` but `highcharts.js` is minified. Since javascript is run in the browser the entire source code must be sent each time a page is loaded, because of this larger javascript files can slow down page loads. To combat this we can run javascript through a minifier like [YUI compressor](http://developer.yahoo.com/yui/compressor/). A minifier removes all whitespace (spaces and new lines) and will rename internal variables to shorter versions, for example it renames my `mobileShowDidDisplay` to `m`. This might seem pedantic, but there are signifigant size savings while minifying javascript.
 
-Since we're using Rails (above 3.1) we have acces to the asset pipeline which helps to minimize javascript for us. Because of this we can use the full source in developement, and serve the minified version in production. Copy the `highcharts.src.js` file and paste it into the `app/assets/javascripts/` directory in your rails project.
+Since we're using Rails (above 3.1) we have acces to the asset pipeline which helps to minimize javascript for us. Because of this we can use the full source in development, and serve the minified version in production. Copy the `highcharts.src.js` file and paste it into the `app/assets/javascripts/` directory in your rails project.
 
 Visit http://localhost:3000/products in your browser and inspect the source, you should see this in your HTML:
 
@@ -383,7 +383,7 @@ We'll need an array of arrays with our product prices and names populated from r
       end
     => [["GPS Output Case", 0.0023375604217626875], ["HD Component", 0.0036399155138876135]...]
 
-Okay, lets look at what we just did, we got all of our products and the sum of our product prices using SQL through active record. Then we used an iterator to build an array of arrays. The first entry is `product.name` and the last is the product's price divided by the total price `product.price/total.to_f`. You may be qondering why we call `total.to_f` ? This is because product.price is an integer and total is also an integer, when you divide an integer by an integer you will get an integer as a result go ahead an run:
+Okay, lets look at what we just did, we got all of our products and the sum of our product prices using SQL through active record. Then we used an iterator to build an array of arrays. The first entry is `product.name` and the last is the product's price divided by the total price `product.price/total.to_f`. You may be wondering why we call `total.to_f` ? This is because product.price is an integer and total is also an integer, when you divide an integer by an integer you will get an integer as a result go ahead an run:
 
     > 1/1
     => 1
@@ -513,7 +513,7 @@ First add a link:
 
     <a href="#">Chart</a>
 
-Now we ned to give it an attribute so that jquery can find this one specific link, if we chose an ID we can only have one link that closes the charts on the page, since id's should be unique. Instead let's use a class:
+Now we need to give it an attribute so that jquery can find this one specific link, if we chose an ID we can only have one link that closes the charts on the page, since id's should be unique. Instead let's use a class:
 
     <a href="#" class='closeChart'>Chart</a>
 
@@ -555,7 +555,7 @@ By now we've used jquery to manipulate the DOM, and used ruby to render some pre
 
 We can send asyncronous requests from javascript to our server, and then manipulate our page with any data we get back. Asyncronous means that we don't have to wait for the request to finish and we don't have to refresh the page. A text message is asyncronous communication, you can send one and forget about the conversation until you get one back. Calling someone on a phone is syncronous communication since you can't go anywhere untill the call is over and you hang up the phone.
 
-What type of functionality might we want to make asyncronous? There are plenty of 'upvote' and 'like' buttons on the Internet these days, while we aren't recording votes, our products do have a price. We could add a button that would allow us to update the button's price. 
+What type of functionality might we want to make asyncronous? There are plenty of 'upvote' and 'like' buttons on the Internet these days, while we aren't recording votes, our products do have a price. We could add a button that would allow us to update the button's price.
 
 First we'll build this functionality in normal synchronous way using page refreshes and links. We'll then re-build it asyncronously using javascript.
 
@@ -579,7 +579,7 @@ to this:
 
 We're tagging our price with the current product id so we can target it with javascript later. Next change your link that we added to increment the price to this:
 
-        <td><%= link_to "+", product_path(product), 
+        <td><%= link_to "+", product_path(product),
                 'data-incr-price' => product.id,  
                 :method           => :put %></td>
 
@@ -612,7 +612,7 @@ Refresh the page and try again, you should get "clicked" in the log, but it shou
         })
     </script>
 
-While this is shorter, it's less clear the intent of the code, so the first method is preferred. Now that we've intercepted our click, let's send our request using javascript. 
+While this is shorter, it's less clear the intent of the code, so the first method is preferred. Now that we've intercepted our click, let's send our request using javascript.
 
 
 First we will need a url to send data to. We can get this from our link, let's do that now:
@@ -722,7 +722,7 @@ Notice that it is saying it is processing as JSON;
 
 So now that we've got the right action, we've need to send a new price. Our update action is looking for a hash of attributes named `product`, so if we want to update price, we'll need to update `params[:product][:price]`. We can send data with our `ajax()` request using the `data` option (again you can check the docs for available options). Before we can update the old price, we have to get the current price. To help out with this process we can add our price to our link as a data attribute like this:
 
-        <td><%= link_to "+", product_path(product), 
+        <td><%= link_to "+", product_path(product),
                 'data-price'      => product.price,
                 'data-incr-price' => product.id,  
                 :method           => :put %></td>
@@ -749,7 +749,7 @@ Now we can get our price using jQuery's `attr()` method:
 
 Before we add this to our ajax request we want to make sure that we've got the right value. Save, refresh, and click a link. You should see the price in your javascript console, if not double check your last steps.
 
-Once we've got our price we need to increment it. 
+Once we've got our price we need to increment it.
 
 
 
